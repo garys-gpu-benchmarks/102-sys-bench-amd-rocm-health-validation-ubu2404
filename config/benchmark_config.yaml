@@ -1,0 +1,30 @@
+# Generated from BenchmarkSpecDefinitions.xlsx::Parameters_SmokeBaselineExtend for workload 102.
+# Parameter names come from Parameter_01..Parameter_20. Values come only from Parameters_SmokeBaselineExtend.
+# Do not invent or replace these tokens/numbers. Nested list/map reshaping is allowed
+# when the runner needs structured sweeps; keep the same tokens and numbers.
+# Command columns on Workload_Definitions are generated display. Sweep/list flags in those
+# commands are documentary; omit them so yaml expands cases.
+# sweep.profile is baseline for LLM Serving and smoke otherwise.
+# Add thresholds: or baselines: from hardware_profile.mi300x.yaml and Workload Type.
+sweep:
+  profile: smoke
+  pcie_check: true
+  clock_check: true
+  temperature_check: true
+  power_check: true
+  ecc_check: true
+  ras_check: true
+  firmware_version_check: true
+  hsa_agent_check: true
+  queue_check: true
+  dmesg_check: true
+  output_format: csv
+
+thresholds:
+  dmesg_gpu_fault_count_min: 0
+  dmesg_gpu_fault_count_max: 0
+  gpu_temperature_c_min: 0
+  gpu_temperature_c_max: 110
+  hsa_agents_visible_count_min: 1
+  pcie_link_width_lanes_min: 1
+  pcie_link_speed_gt_s_min: 1
