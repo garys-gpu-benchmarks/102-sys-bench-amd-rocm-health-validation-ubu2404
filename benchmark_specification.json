@@ -42,22 +42,22 @@
   {
     "field_name": "Command Tools Executed",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, rocm-smi --showtemp --showbus --showclocks --showpower, amd-smi metric, and rocminfo"
+    "value": "Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files"
   },
   {
     "field_name": "Command Execution Details and Purpose",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, rocm-smi temperature/bus/clock/power queries, amd-smi metric, and rocminfo, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
+    "value": "Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
   },
   {
     "field_name": "Command Methodology",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Scan dmesg for GPU fault keywords and query rocm-smi temperature, bus, clocks, and power, amd-smi metric, and rocminfo once. Regex-extract junction temperature, PCIe width and speed, HSA agent count, and fault counts into one summary row. DCGM is not used"
+    "value": "Scan dmesg for GPU fault keywords and query amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files once. Regex-extract junction temperature, PCIe width and speed, HSA agent count, and fault counts into one summary row. DCGM is not used"
   },
   {
     "field_name": "Execution Description With Parameters",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Takes one ROCm health snapshot from dmesg, rocm-smi, amd-smi, and rocminfo. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv"
+    "value": "Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv"
   },
   {
     "field_name": "Execution Domain",
@@ -142,7 +142,7 @@
   {
     "field_name": "Framework",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocminfo"
+    "value": "Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo"
   },
   {
     "field_name": "Kernel Version",
@@ -152,7 +152,7 @@
   {
     "field_name": "Runtime Language",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "C (dmesg), C++ (rocminfo, rocm-smi/amd-smi)"
+    "value": "C (dmesg), C++ (rocminfo, amd-smi)"
   },
   {
     "field_name": "Container Base Image",
@@ -162,7 +162,7 @@
   {
     "field_name": "Python Version",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Python 3.14.N (uv-managed; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only"
+    "value": "Python 3.14.8 (uv-managed CPython from `uv python install 3.14`; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only"
   },
   {
     "field_name": "GPU Runtime Version (was ROCm Version)",
@@ -217,7 +217,7 @@
   {
     "field_name": "g++ Version",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "N/A - CMake not used"
+    "value": "N/A - g++ not used"
   },
   {
     "field_name": "Known Runtime Constraints (<=35 Words Each)",
@@ -362,17 +362,17 @@
   {
     "field_name": "Schema Last Updated",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "2026-09-05"
+    "value": "2026-10-17"
   },
   {
     "field_name": "Installation and Execution Summary",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, rocm-smi temperature/bus/clock/power queries, amd-smi metric, and rocminfo, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
+    "value": "Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
   },
   {
     "field_name": "Workload Command Line Executable",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, rocm-smi --showtemp --showbus --showclocks --showpower, amd-smi metric, and rocminfo"
+    "value": "Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files"
   },
   {
     "field_name": "ROCm Version",
@@ -387,7 +387,7 @@
   {
     "field_name": "Execution Summary (Run and Measure)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, rocm-smi temperature/bus/clock/power queries, amd-smi metric, and rocminfo, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
+    "value": "Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used"
   },
   {
     "field_name": "nVidia Porting Instructions (Reference Only)",

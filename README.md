@@ -17,7 +17,7 @@ Results are written to `results/benchmark.db` and `results/summary.json`.
 
 This workload is executed on the validation host after the repository is copied there. `setup.sh` and `run_benchmark.sh` do not open an outbound SSH session.
 
-Prerequisites: Ubuntu 24.04; AMD; Python 3.14.N (uv-managed; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only; root or sudo for `setup.sh`. Framework: Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocminfo. This is a host benchmark, not a laptop `pip install` project.
+Prerequisites: Ubuntu 24.04; AMD; Python 3.14.8 (uv-managed CPython from `uv python install 3.14`; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only; root or sudo for `setup.sh`. Framework: Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo. This is a host benchmark, not a laptop `pip install` project.
 
 ```mermaid
 flowchart LR
@@ -32,14 +32,14 @@ This repository is one of the 32 workloads in the AMD Ubuntu 24.04 bundle, [`bun
 apt-get update && apt-get install -y git
 git clone --recurse-submodules https://github.com/garys-gpu-benchmarks/bundle-amd-ubuntu-2404 /opt/benchmarks \
   && cd /opt/benchmarks \
-  && ./run.sh list \
+  && ./run_benchmark_suite.sh --list \
   && cd /opt/benchmarks/102-sys-bench-amd-rocm-health-validation-ubu2404 \
   && bash run_benchmark.sh --profile smoke --validate \
   && cd /opt/benchmarks \
   && echo "Done: 32 workloads in /opt/benchmarks; 102-sys-bench-amd-rocm-health-validation-ubu2404 smoke run passed. Next: ./run_benchmark_suite.sh --help"
 ```
 
-Every line in `./run.sh list` should show `ready`. The commands are joined with `&&`, so if the clone or the smoke run fails, the chain stops there, and the closing message appears only when everything succeeded. The chain ends in `/opt/benchmarks`, where the suite runner is. For more extensive testing:
+Every line in `./run_benchmark_suite.sh --list` should show `ready`; it exits with an error if any workload is not fetched. The commands are joined with `&&`, so if the clone, the list or the smoke run fails, the chain stops there, and the closing message appears only when everything succeeded. The chain ends in `/opt/benchmarks`, where the suite runner is. For more extensive testing:
 
 ```bash
 ./run_benchmark_suite.sh -p smoke                 # smoke test of all 32 workloads
@@ -73,8 +73,8 @@ Three operator scripts from [`garys-gpu-benchmarks/gpu-bench-suite`](https://git
 - **`get_remote_info.sh`** (on your laptop; Git Bash on Windows) — over one SSH connection, copies the runtime ledger and every workload's `results/raw`, `results/parsed` and suite logs into `RUNTIME_LEDGERS/` and `DIRECTORIES/`.
   ```bash
   git clone https://github.com/garys-gpu-benchmarks/gpu-bench-suite && cd gpu-bench-suite
-  ./scripts/get_remote_info.sh 203.0.113.10                     # root@host, port 22
-  ./scripts/get_remote_info.sh -i ~/.ssh/id_ed25519 -o ~/results ubuntu@203.0.113.10 2222
+  ./scripts/get_remote_info.sh --host 203.0.113.10              # root@host, port 22
+  ./scripts/get_remote_info.sh --host ubuntu@203.0.113.10 --port 2222 -i ~/.ssh/id_ed25519 -o ~/results
   ```
 - **`show_metrics.sh`** (laptop or GPU host) — prints one workload's runs from the runtime ledger in fixed-width metric columns with per-profile means. On the GPU host it is `/opt/benchmarks/show_metrics.sh`.
   ```bash
@@ -85,7 +85,7 @@ Three operator scripts from [`garys-gpu-benchmarks/gpu-bench-suite`](https://git
 
 ## 1. Overview
 
-Takes one ROCm health snapshot from dmesg, rocm-smi, amd-smi, and rocminfo. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv Sweep dimensions: pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check.
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv Sweep dimensions: pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check.
 
 ## 2. What It Validates
 
@@ -110,8 +110,8 @@ Takes one ROCm health snapshot from dmesg, rocm-smi, amd-smi, and rocminfo. Yaml
 
 - OS: Ubuntu 24.04
 - GPU vendor: AMD
-- Framework family: Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocminfo
-- Python: Python 3.14.N (uv-managed; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only
+- Framework family: Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo
+- Python: Python 3.14.8 (uv-managed CPython from `uv python install 3.14`; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only
 
 ### Reference validation environment
 
@@ -119,11 +119,11 @@ The tables below describe the machine used to generate the reference results. Th
 
 ### System
 
-Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocminfo
+Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo
 
 ### GPU
 
-Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocminfo
+Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo
 
 ## 5. Software Requirements
 
@@ -131,22 +131,22 @@ Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, rocm-smi, amd-smi, rocm
 |---|---|
 | OS | Ubuntu 24.04 |
 | Kernel | kernel 6.8.0 |
-| Python | Python 3.14.N (uv-managed; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only |
+| Python | Python 3.14.8 (uv-managed CPython from `uv python install 3.14`; all benchmark venvs). System Python 3.12.3 retained for OS and setup scripts only |
 | ROCm | ROCm 10.1.0 |
 | rocBLAS | N/A - rocBLAS not used |
 
-Takes one ROCm health snapshot from dmesg, rocm-smi, amd-smi, and rocminfo. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv
 
 ## 6. Installation
 
 ```bash
-Run dmesg, rocm-smi --showtemp --showbus --showclocks --showpower, amd-smi metric, and rocminfo
+Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files
 ```
 
 ## 7. Running the Benchmark
 
 ```bash
-Run dmesg, rocm-smi --showtemp --showbus --showclocks --showpower, amd-smi metric, and rocminfo
+Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files
 ```
 
 **Validating results separately:**
@@ -168,7 +168,7 @@ sample_index,status,dmesg_gpu_fault_count,gpu_temperature_c,hsa_agents_visible_c
 0,ok,0,40,1,16,32,1,
 
 ```bash
-Run dmesg, rocm-smi --showtemp --showbus --showclocks --showpower, amd-smi metric, and rocminfo
+Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files
 ```
 
 ### `results/summary.json`

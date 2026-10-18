@@ -15,7 +15,7 @@ This PRD.md section is populated from benchmark_specification.json, which is the
 ROCm System Validation (clocks, temp, etc.)
 
 ## Execution Summary (Run and Measure)
-Run dmesg, rocm-smi temperature/bus/clock/power queries, amd-smi metric, and rocminfo, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used
+Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used
 
 ## Main Goal
 Analyze GPU ROCm runtime environment health
