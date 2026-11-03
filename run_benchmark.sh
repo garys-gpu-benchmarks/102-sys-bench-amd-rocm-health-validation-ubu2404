@@ -46,16 +46,8 @@ Validation and logging:
 
 Workload options:
   --pcie-check <value>            Override pcie_check
-  --clock-check <value>            Override clock_check
   --temperature-check <value>            Override temperature_check
-  --power-check <value>            Override power_check
-  --ecc-check <value>            Override ecc_check
-  --ras-check <value>            Override ras_check
-  --firmware-version-check <value>            Override firmware_version_check
-  --hsa-agent-check <value>            Override hsa_agent_check
-  --queue-check <value>            Override queue_check
   --dmesg-check <value>            Override dmesg_check
-  --output-format <value>            Override output_format
 
 Information:
   --specification               Print this workload's specification and exit
@@ -90,16 +82,8 @@ LOG_LEVEL_VALUE="INFO"
 OUTPUT_FORMAT=""
 SAVE_OPTIONS_FILE=""
 PCIE_CHECK=""
-CLOCK_CHECK=""
 TEMPERATURE_CHECK=""
-POWER_CHECK=""
-ECC_CHECK=""
-RAS_CHECK=""
-FIRMWARE_VERSION_CHECK=""
-HSA_AGENT_CHECK=""
-QUEUE_CHECK=""
 DMESG_CHECK=""
-OUTPUT_FORMAT=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -121,16 +105,8 @@ while [[ $# -gt 0 ]]; do
     --output-format) OUTPUT_FORMAT="${2:-}"; shift 2 ;;
     --save-options-file) SAVE_OPTIONS_FILE="${2:-}"; shift 2 ;;
     --pcie-check) PCIE_CHECK="${2:-}"; shift 2 ;;
-    --clock-check) CLOCK_CHECK="${2:-}"; shift 2 ;;
     --temperature-check) TEMPERATURE_CHECK="${2:-}"; shift 2 ;;
-    --power-check) POWER_CHECK="${2:-}"; shift 2 ;;
-    --ecc-check) ECC_CHECK="${2:-}"; shift 2 ;;
-    --ras-check) RAS_CHECK="${2:-}"; shift 2 ;;
-    --firmware-version-check) FIRMWARE_VERSION_CHECK="${2:-}"; shift 2 ;;
-    --hsa-agent-check) HSA_AGENT_CHECK="${2:-}"; shift 2 ;;
-    --queue-check) QUEUE_CHECK="${2:-}"; shift 2 ;;
     --dmesg-check) DMESG_CHECK="${2:-}"; shift 2 ;;
-    --output-format) OUTPUT_FORMAT="${2:-}"; shift 2 ;;
     --help|--specification|--matrix-definition) shift ;;
     *) die "Unknown option: $1" ;;
   esac
@@ -170,32 +146,16 @@ PY
 }
 
 PCIE_CHECK="${PCIE_CHECK:-$(yaml_get pcie_check)}"
-CLOCK_CHECK="${CLOCK_CHECK:-$(yaml_get clock_check)}"
 TEMPERATURE_CHECK="${TEMPERATURE_CHECK:-$(yaml_get temperature_check)}"
-POWER_CHECK="${POWER_CHECK:-$(yaml_get power_check)}"
-ECC_CHECK="${ECC_CHECK:-$(yaml_get ecc_check)}"
-RAS_CHECK="${RAS_CHECK:-$(yaml_get ras_check)}"
-FIRMWARE_VERSION_CHECK="${FIRMWARE_VERSION_CHECK:-$(yaml_get firmware_version_check)}"
-HSA_AGENT_CHECK="${HSA_AGENT_CHECK:-$(yaml_get hsa_agent_check)}"
-QUEUE_CHECK="${QUEUE_CHECK:-$(yaml_get queue_check)}"
 DMESG_CHECK="${DMESG_CHECK:-$(yaml_get dmesg_check)}"
-OUTPUT_FORMAT="${OUTPUT_FORMAT:-$(yaml_get output_format)}"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-$(yaml_get output_format)}"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-csv}"
 
 BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
 [[ "${VALIDATE}" -eq 1 ]] && BENCHMARK_RUN_COMMAND+=" --validate"
 [[ -n "${PCIE_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --pcie-check $(printf %q "${PCIE_CHECK}")"
-[[ -n "${CLOCK_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --clock-check $(printf %q "${CLOCK_CHECK}")"
 [[ -n "${TEMPERATURE_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --temperature-check $(printf %q "${TEMPERATURE_CHECK}")"
-[[ -n "${POWER_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --power-check $(printf %q "${POWER_CHECK}")"
-[[ -n "${ECC_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --ecc-check $(printf %q "${ECC_CHECK}")"
-[[ -n "${RAS_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --ras-check $(printf %q "${RAS_CHECK}")"
-[[ -n "${FIRMWARE_VERSION_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --firmware-version-check $(printf %q "${FIRMWARE_VERSION_CHECK}")"
-[[ -n "${HSA_AGENT_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --hsa-agent-check $(printf %q "${HSA_AGENT_CHECK}")"
-[[ -n "${QUEUE_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --queue-check $(printf %q "${QUEUE_CHECK}")"
 [[ -n "${DMESG_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --dmesg-check $(printf %q "${DMESG_CHECK}")"
-[[ -n "${OUTPUT_FORMAT}" ]] && BENCHMARK_RUN_COMMAND+=" --output-format $(printf %q "${OUTPUT_FORMAT}")"
 set_benchmark_run_command "${BENCHMARK_RUN_COMMAND}"
 
 HOSTNAME_VALUE="$(hostname -s 2>/dev/null || hostname)"
@@ -239,16 +199,8 @@ run_collection() {
   fi
   grep -q -- '--output-format' <<<"${help}" && collect_args+=(--output-format "${OUTPUT_FORMAT}")
   grep -q -- '--pcie-check' <<<"${help}" && collect_args+=(--pcie-check "${PCIE_CHECK}")
-  grep -q -- '--clock-check' <<<"${help}" && collect_args+=(--clock-check "${CLOCK_CHECK}")
   grep -q -- '--temperature-check' <<<"${help}" && collect_args+=(--temperature-check "${TEMPERATURE_CHECK}")
-  grep -q -- '--power-check' <<<"${help}" && collect_args+=(--power-check "${POWER_CHECK}")
-  grep -q -- '--ecc-check' <<<"${help}" && collect_args+=(--ecc-check "${ECC_CHECK}")
-  grep -q -- '--ras-check' <<<"${help}" && collect_args+=(--ras-check "${RAS_CHECK}")
-  grep -q -- '--firmware-version-check' <<<"${help}" && collect_args+=(--firmware-version-check "${FIRMWARE_VERSION_CHECK}")
-  grep -q -- '--hsa-agent-check' <<<"${help}" && collect_args+=(--hsa-agent-check "${HSA_AGENT_CHECK}")
-  grep -q -- '--queue-check' <<<"${help}" && collect_args+=(--queue-check "${QUEUE_CHECK}")
   grep -q -- '--dmesg-check' <<<"${help}" && collect_args+=(--dmesg-check "${DMESG_CHECK}")
-  grep -q -- '--output-format' <<<"${help}" && collect_args+=(--output-format "${OUTPUT_FORMAT}")
 
   printf -v collect_cmd '%q ' "${PYTHON_BIN}" scripts/collect_workload.py "${collect_args[@]}"
   echo "[RUN] ${collect_cmd}"

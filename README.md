@@ -85,7 +85,7 @@ Three operator scripts from [`garys-gpu-benchmarks/gpu-bench-suite`](https://git
 
 ## 1. Overview
 
-Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv Sweep dimensions: pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check.
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count Sweep dimensions: pcie_check, temperature_check, dmesg_check.
 
 ## 2. What It Validates
 
@@ -135,7 +135,7 @@ Ubuntu 24.04 / AMD / Bash, SQLite, Python, PyYAML, ROCm, amd-smi, rocminfo
 | ROCm | ROCm 10.1.0 |
 | rocBLAS | N/A - rocBLAS not used |
 
-Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count. output_format: csv
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
 
 ## 6. Installation
 

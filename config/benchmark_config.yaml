@@ -9,16 +9,8 @@
 sweep:
   profile: smoke
   pcie_check: true
-  clock_check: true
   temperature_check: true
-  power_check: true
-  ecc_check: true
-  ras_check: true
-  firmware_version_check: true
-  hsa_agent_check: true
-  queue_check: true
   dmesg_check: true
-  output_format: csv
 
 thresholds:
   dmesg_gpu_fault_count_min: 0
