@@ -2,15 +2,11 @@
 
 ## Execution Description
 
-Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count Sweep dimensions: pcie_check, temperature_check, dmesg_check.
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Every run records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count Sweep dimensions: no swept parameters.
 
 ## Parameters
 
-| Parameter | CLI Flag | Tested Values | Default | Description |
-| --- | --- | --- | --- | --- |
-| pcie_check | `--pcie-check` | smoke=true, baseline=true, extended=true | true | From Parameter list; see Execution Description With Parameters. |
-| temperature_check | `--temperature-check` | smoke=true, baseline=true, extended=true | true | From Parameter list; see Execution Description With Parameters. |
-| dmesg_check | `--dmesg-check` | smoke=true, baseline=true, extended=true | true | From Parameter list; see Execution Description With Parameters. |
+No workbook parameters are populated for this workload.
 
 ## Invocation
 
@@ -35,7 +31,7 @@ sample_index,status,dmesg_gpu_fault_count,gpu_temperature_c,hsa_agents_visible_c
 
 ## Framework
 
-Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
+Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Every run records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
 
 ## Installation and Execution Summary
 
@@ -95,10 +91,10 @@ bash run_benchmark.sh --profile extended --validate
 2. `run.error_message` is NULL.
 3. `started_at` and `finished_at` are valid ISO-8601 UTC strings.
 4. All required aggregate metrics in `runs` are non-NULL and finite.
-5. All required aggregate metrics are physically sensible (positive values). Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
+5. All required aggregate metrics are physically sensible (positive values). Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Every run records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
 6. At least 2 sample rows exist for the latest `run_id` (sweep coverage).
 7. No sample has `status = 'error'`.
-8. Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Yaml pcie_check, clock_check, temperature_check, power_check, ecc_check, ras_check, firmware_version_check, hsa_agent_check, queue_check, and dmesg_check are documented; the collector always records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
+8. Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs. Every run records dmesg faults, junction temp, HSA agent count, PCIe width/speed, and queue count
 
 ### Baseline / Threshold configuration (`config/benchmark_config.yaml`)
 

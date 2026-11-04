@@ -8,9 +8,6 @@
 # Add thresholds: or baselines: from hardware_profile.mi300x.yaml and Workload Type.
 sweep:
   profile: smoke
-  pcie_check: true
-  temperature_check: true
-  dmesg_check: true
 
 thresholds:
   dmesg_gpu_fault_count_min: 0

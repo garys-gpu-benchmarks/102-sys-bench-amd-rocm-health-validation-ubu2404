@@ -45,9 +45,7 @@ Validation and logging:
   --save-options-file <path>    Write resolved CLI options to PATH
 
 Workload options:
-  --pcie-check <value>            Override pcie_check
-  --temperature-check <value>            Override temperature_check
-  --dmesg-check <value>            Override dmesg_check
+  (none)
 
 Information:
   --specification               Print this workload's specification and exit
@@ -81,9 +79,7 @@ QUIET=0
 LOG_LEVEL_VALUE="INFO"
 OUTPUT_FORMAT=""
 SAVE_OPTIONS_FILE=""
-PCIE_CHECK=""
-TEMPERATURE_CHECK=""
-DMESG_CHECK=""
+
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -104,9 +100,7 @@ while [[ $# -gt 0 ]]; do
     --log-level) LOG_LEVEL_VALUE="${2:-}"; shift 2 ;;
     --output-format) OUTPUT_FORMAT="${2:-}"; shift 2 ;;
     --save-options-file) SAVE_OPTIONS_FILE="${2:-}"; shift 2 ;;
-    --pcie-check) PCIE_CHECK="${2:-}"; shift 2 ;;
-    --temperature-check) TEMPERATURE_CHECK="${2:-}"; shift 2 ;;
-    --dmesg-check) DMESG_CHECK="${2:-}"; shift 2 ;;
+
     --help|--specification|--matrix-definition) shift ;;
     *) die "Unknown option: $1" ;;
   esac
@@ -145,17 +139,13 @@ print("" if raw_value is None else raw_value)
 PY
 }
 
-PCIE_CHECK="${PCIE_CHECK:-$(yaml_get pcie_check)}"
-TEMPERATURE_CHECK="${TEMPERATURE_CHECK:-$(yaml_get temperature_check)}"
-DMESG_CHECK="${DMESG_CHECK:-$(yaml_get dmesg_check)}"
+
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-$(yaml_get output_format)}"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-csv}"
 
 BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
 [[ "${VALIDATE}" -eq 1 ]] && BENCHMARK_RUN_COMMAND+=" --validate"
-[[ -n "${PCIE_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --pcie-check $(printf %q "${PCIE_CHECK}")"
-[[ -n "${TEMPERATURE_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --temperature-check $(printf %q "${TEMPERATURE_CHECK}")"
-[[ -n "${DMESG_CHECK}" ]] && BENCHMARK_RUN_COMMAND+=" --dmesg-check $(printf %q "${DMESG_CHECK}")"
+
 set_benchmark_run_command "${BENCHMARK_RUN_COMMAND}"
 
 HOSTNAME_VALUE="$(hostname -s 2>/dev/null || hostname)"
@@ -198,9 +188,6 @@ run_collection() {
     collect_args+=(--device-id "${DEVICE_ID:-0}")
   fi
   grep -q -- '--output-format' <<<"${help}" && collect_args+=(--output-format "${OUTPUT_FORMAT}")
-  grep -q -- '--pcie-check' <<<"${help}" && collect_args+=(--pcie-check "${PCIE_CHECK}")
-  grep -q -- '--temperature-check' <<<"${help}" && collect_args+=(--temperature-check "${TEMPERATURE_CHECK}")
-  grep -q -- '--dmesg-check' <<<"${help}" && collect_args+=(--dmesg-check "${DMESG_CHECK}")
 
   printf -v collect_cmd '%q ' "${PYTHON_BIN}" scripts/collect_workload.py "${collect_args[@]}"
   echo "[RUN] ${collect_cmd}"
