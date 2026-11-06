@@ -21,7 +21,7 @@ Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe
 Analyze GPU ROCm runtime environment health
 
 ## Validation Objective
-Validates a single telemetry snapshot. ECC/RAS/clock yaml flags are not implemented as separate probes
+Validates HSA GPU agent visibility, temperature, PCIe width/speed, and dmesg GPU fault mentions
 
 ## Workload Category
 System Validation & Reliability
