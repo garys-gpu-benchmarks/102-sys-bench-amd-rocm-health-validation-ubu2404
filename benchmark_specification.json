@@ -35,6 +35,11 @@
     "value": "Analyze GPU ROCm runtime environment health"
   },
   {
+    "field_name": "Command Tools Executed",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files"
+  },
+  {
     "field_name": "Metrics",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "#1: dmesg GPU fault count (dmesg_gpu_fault_count); #2: GPU temperature (gpu_temperature_c); #3: PCIe link width (pcie_link_width_lanes); #4: PCIe link speed (pcie_link_speed_gt_s); #5: HSA agents visible (hsa_agents_visible_count)"
@@ -140,16 +145,6 @@
     "value": "-"
   },
   {
-    "field_name": "Validation Objective",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Validates HSA GPU agent visibility, temperature, PCIe width/speed, and dmesg GPU fault mentions"
-  },
-  {
-    "field_name": "Command Tools Executed",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files"
-  },
-  {
     "field_name": "run_benchmark Command Plus Options for Smoke Run (One minute or less)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "bash run_benchmark.sh --smoke --validate"
@@ -163,6 +158,11 @@
     "field_name": "run_benchmark Command Plus Options for Extended Run (8 to 15 minutes)",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "bash run_benchmark.sh --extended --validate"
+  },
+  {
+    "field_name": "Validation Objective",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Validates HSA GPU agent visibility, temperature, PCIe width/speed, and dmesg GPU fault mentions"
   },
   {
     "field_name": "Command Execution Details and Purpose",

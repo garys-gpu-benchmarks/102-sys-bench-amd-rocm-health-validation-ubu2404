@@ -16,12 +16,11 @@ capture_benchmark_run_command_submitted "$@"
 
 usage() {
   cat <<'USAGE'
+
 Usage: bash run_benchmark.sh [OPTIONS]
 
 Workload Name:          ROCm System Validation (clocks, temp, etc.).
 Main Goal:              Analyze GPU ROCm runtime environment health.
-Validation Objective:   Validates HSA GPU agent visibility, temperature, PCIe width/speed, and dmesg
-                        GPU fault mentions.
 Command Tools Executed: Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files.
 
 Profiles (default: --smoke):
