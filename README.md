@@ -20,12 +20,20 @@ bash run_benchmark.sh --smoke
 
 ## Profiles and Parameters
 
-This workload has no tunable parameters. Pick a profile with `--smoke` (default), `--baseline` or `--extended`:
+| Parameter | Flag | smoke | baseline | extended |
+|---|---|---|---|---|
+| `monitor_duration_sec` | `--monitor-duration-sec` | 5 | 200 | 580 |
+| `expected_gpu_count` | `--expected-gpu-count` | 1 | 1 | 1 |
+| `min_pcie_link_width` | `--min-pcie-link-width` | 16 | 16 | 16 |
+
+Pick a profile with `--smoke` (default), `--baseline` or `--extended`. Any flag in the table overrides that profile's value:
 
 ```bash
-bash run_benchmark.sh --baseline
+bash run_benchmark.sh --baseline --expected-gpu-count 2
 bash run_benchmark.sh --help        # every option
 ```
+
+Profile values live in `config/benchmark_config.yaml`.
 
 ## Metrics
 
@@ -40,9 +48,9 @@ bash run_benchmark.sh --help        # every option
 ### Notes
 
 - The smoke profile is a quick check with reduced sizes and iteration counts. Use `--baseline` or `--extended` for representative numbers.
-- Single snapshot only.
-- ECC/RAS yaml flags are unused.
-- Exclusive GPU preferred to avoid concurrent-load skew.
+- Temperature is idle unless other work runs.
+- The fault count covers dmesg since boot.
+- A width or agent check that cannot read its value is skipped and noted, not failed.
 
 ## Output
 

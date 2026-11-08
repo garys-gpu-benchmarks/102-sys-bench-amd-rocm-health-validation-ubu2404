@@ -5,7 +5,13 @@
 # Command columns on Workload_Definitions are generated display. Sweep/list flags in those
 # commands are documentary; omit them so yaml expands cases.
 # Add thresholds: or baselines: from hardware_profile.mi300x.yaml and Workload Type.
-sweep: {}
+sweep:
+  monitor_duration_sec:
+    smoke: 5
+    baseline: 200
+    extended: 580
+  expected_gpu_count: 1
+  min_pcie_link_width: 16
 
 thresholds:
   dmesg_gpu_fault_count_min: 0

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # File: run_benchmark.sh
-# Description: Takes one ROCm health snapshot from dmesg, amd-smi, rocminfo, and sysfs.
+# Description: Samples ROCm GPU health once per second from amd-smi, rocminfo, and sysfs, and counts dmesg GPU fault lines since boot.
 # Execution: bash run_benchmark.sh [--smoke|--baseline|--extended]
 # Options: --smoke, --baseline, --extended, --config, --help
 # Requirements: bash, python3, repository-local .venv
@@ -19,14 +19,25 @@ usage() {
 
 Usage: bash run_benchmark.sh [OPTIONS]
 
-Workload Name:          ROCm System Validation (clocks, temp, etc.).
-Main Goal:              Analyze GPU ROCm runtime environment health.
-Command Tools Executed: Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files.
+Workload Name:          ROCm System Validation (clocks, temp, etc.)
+Main Goal:              Analyze GPU ROCm runtime environment health
+Command Tools Executed: Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files
 
 Profiles (default: --smoke):
   --smoke                       Run smoke profile
   --baseline                    Run baseline profile
   --extended                    Run extended profile
+
+Parameters (override the profile's value):
+  --monitor-duration-sec <n>    How long to keep sampling GPU health, once per second
+                                  smoke:    5
+                                  baseline: 200
+                                  extended: 580
+  --expected-gpu-count <n>      Fewest GPUs that must stay visible; fewer fails the run
+                                  all profiles: 1
+  --min-pcie-link-width <n>     Narrowest acceptable PCIe link width on every GPU; narrower fails
+                                the run
+                                  all profiles: 16
 
 General options:
   --config <file>               Config file (default: config/benchmark_config.yaml)
@@ -39,6 +50,7 @@ Examples:
   bash run_benchmark.sh --smoke
   bash run_benchmark.sh --baseline
   bash run_benchmark.sh --extended
+  bash run_benchmark.sh --baseline --expected-gpu-count 2
 USAGE
 }
 
@@ -58,7 +70,9 @@ PROFILE="smoke"
 CONFIG_FILE="config/benchmark_config.yaml"
 QUIET=0
 LOG_LEVEL_VALUE="INFO"
-
+MONITOR_DURATION_SEC=""
+EXPECTED_GPU_COUNT=""
+MIN_PCIE_LINK_WIDTH=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -69,7 +83,9 @@ while [[ $# -gt 0 ]]; do
     --validate) shift ;;  # ignored; result validation always runs
     --quiet) QUIET=1; shift ;;
     --log-level) LOG_LEVEL_VALUE="${2:-}"; shift 2 ;;
-
+    --monitor-duration-sec) MONITOR_DURATION_SEC="${2:-}"; shift 2 ;;
+    --expected-gpu-count) EXPECTED_GPU_COUNT="${2:-}"; shift 2 ;;
+    --min-pcie-link-width) MIN_PCIE_LINK_WIDTH="${2:-}"; shift 2 ;;
     --help|--specification) shift ;;
     *) die "Unknown option: $1" ;;
   esac
@@ -101,12 +117,16 @@ print("" if raw_value is None else raw_value)
 PY
 }
 
-
+MONITOR_DURATION_SEC="${MONITOR_DURATION_SEC:-$(yaml_get monitor_duration_sec)}"
+EXPECTED_GPU_COUNT="${EXPECTED_GPU_COUNT:-$(yaml_get expected_gpu_count)}"
+MIN_PCIE_LINK_WIDTH="${MIN_PCIE_LINK_WIDTH:-$(yaml_get min_pcie_link_width)}"
 OUTPUT_FORMAT="$(yaml_get output_format)"
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-csv}"
 
 BENCHMARK_RUN_COMMAND="bash run_benchmark.sh --${PROFILE}"
-
+[[ -n "${MONITOR_DURATION_SEC}" ]] && BENCHMARK_RUN_COMMAND+=" --monitor-duration-sec $(printf %q "${MONITOR_DURATION_SEC}")"
+[[ -n "${EXPECTED_GPU_COUNT}" ]] && BENCHMARK_RUN_COMMAND+=" --expected-gpu-count $(printf %q "${EXPECTED_GPU_COUNT}")"
+[[ -n "${MIN_PCIE_LINK_WIDTH}" ]] && BENCHMARK_RUN_COMMAND+=" --min-pcie-link-width $(printf %q "${MIN_PCIE_LINK_WIDTH}")"
 set_benchmark_run_command "${BENCHMARK_RUN_COMMAND}"
 
 HOSTNAME_VALUE="$(hostname -s 2>/dev/null || hostname)"
@@ -132,6 +152,9 @@ run_collection() {
   help="$("${PYTHON_BIN}" scripts/collect_workload.py --help 2>&1 || true)"
   grep -q -- '--config' <<<"${help}" && collect_args+=(--config "${CONFIG_FILE}")
   grep -q -- '--output-format' <<<"${help}" && collect_args+=(--output-format "${OUTPUT_FORMAT}")
+  grep -q -- '--monitor-duration-sec' <<<"${help}" && collect_args+=(--monitor-duration-sec "${MONITOR_DURATION_SEC}")
+  grep -q -- '--expected-gpu-count' <<<"${help}" && collect_args+=(--expected-gpu-count "${EXPECTED_GPU_COUNT}")
+  grep -q -- '--min-pcie-link-width' <<<"${help}" && collect_args+=(--min-pcie-link-width "${MIN_PCIE_LINK_WIDTH}")
 
   printf -v collect_cmd '%q ' "${PYTHON_BIN}" scripts/collect_workload.py "${collect_args[@]}"
   log_run "${collect_cmd}"

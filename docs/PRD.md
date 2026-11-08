@@ -15,13 +15,13 @@ This PRD.md section is populated from benchmark_specification.json, which is the
 ROCm System Validation (clocks, temp, etc.)
 
 ## Execution Summary (Run and Measure)
-Run dmesg, amd-smi metric (temperature, clocks, power), rocminfo, and sysfs PCIe link files, then parse junction temp, PCIe width/speed, HSA agents, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used
+Run amd-smi metric, rocminfo, and sysfs PCIe link files once per second for monitor_duration_sec, and dmesg at the start and end, then report peak junction temperature, the narrowest PCIe link, the fewest HSA GPU agents seen, and fault-keyword counts, to measure ROCm GPU health. DCGM is not used
 
 ## Main Goal
 Analyze GPU ROCm runtime environment health
 
 ## Validation Objective
-Validates HSA GPU agent visibility, temperature, PCIe width/speed, and dmesg GPU fault mentions
+Validates HSA GPU agent visibility against expected_gpu_count, PCIe link width against min_pcie_link_width, PCIe speed, peak temperature over the monitor window, and dmesg GPU fault mentions
 
 ## Workload Category
 System Validation & Reliability
