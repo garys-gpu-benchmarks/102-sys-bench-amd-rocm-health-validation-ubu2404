@@ -40,6 +40,11 @@
     "value": "Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files"
   },
   {
+    "field_name": "Execution Description With Parameters",
+    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
+    "value": "Samples ROCm GPU health once per second from amd-smi, rocminfo, and sysfs, and counts dmesg GPU fault lines since boot. monitor_duration_sec: seconds to keep sampling; temperature is the peak over the window (smoke 5 / baseline 200 / extended 580). expected_gpu_count: fewest HSA GPU agents that must stay visible; fewer fails the run (1). min_pcie_link_width: narrowest acceptable PCIe link, in lanes, on every AMD GPU; narrower fails the run (16)"
+  },
+  {
     "field_name": "Metrics",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "#1: dmesg GPU fault count (dmesg_gpu_fault_count); #2: GPU temperature (gpu_temperature_c); #3: PCIe link width (pcie_link_width_lanes); #4: PCIe link speed (pcie_link_speed_gt_s); #5: HSA agents visible (hsa_agents_visible_count)"
@@ -173,11 +178,6 @@
     "field_name": "Command Methodology",
     "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
     "value": "Poll amd-smi metric, rocminfo, and every AMD GPU's sysfs PCIe link files once per second for monitor_duration_sec. Keep the peak temperature, the narrowest link width and slowest speed, and the fewest HSA GPU agents seen. Fail when fewer than expected_gpu_count agents or a link narrower than min_pcie_link_width appears. DCGM is not used"
-  },
-  {
-    "field_name": "Execution Description With Parameters",
-    "source_file": "BenchmarkSpecDefinitions.xlsx::Workload_Definitions",
-    "value": "Samples ROCm GPU health once per second from amd-smi, rocminfo, and sysfs, and counts dmesg GPU fault lines since boot. monitor_duration_sec: seconds to keep sampling; temperature is the peak over the window (smoke 5 / baseline 200 / extended 580). expected_gpu_count: fewest HSA GPU agents that must stay visible; fewer fails the run (1). min_pcie_link_width: narrowest acceptable PCIe link, in lanes, on every AMD GPU; narrower fails the run (16)"
   },
   {
     "field_name": "Execution Domain",
