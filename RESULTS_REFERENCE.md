@@ -3,23 +3,23 @@
 **Main goal:** Analyze GPU ROCm runtime environment health  
 **Tools:** Run dmesg, amd-smi metric, rocminfo, and sysfs PCIe link files
 
-Reference results measured by the maintainer on the system shown in each section (generator TEMPLATE_00_146 · recorded 2026-11-18). Your own runs write `results/RESULTS_ACTUAL.md` in the same format.
+Reference results measured by the maintainer on the system shown in each section (generator TEMPLATE_00_148 · recorded 2026-11-19). Your own runs write `results/RESULTS_ACTUAL.md` in the same format.
 
 > Smoke runs use deliberately small sizes. They check that the workload installs and runs end to end; their numbers are not performance results. Baseline and extended are.
 
 <!-- profile:smoke -->
 ## smoke
 
-- **System:** 1× AMD Instinct MI300X VF (196288 MB) · INTEL(R) XEON(R) PLATINUM 8568Y+ · Ubuntu 24.04.5 LTS · kernel 6.8.0-147-generic · driver 7.1.9.31600000
-- **Run:** 2026-11-18T10:39:25Z · status **PASS** (exit 0)
-- **Time (mm:ss):** setup 00:11 · benchmark 00:06 · whole run 00:27
-- **Source:** run 102_20261118_103925
+- **System:** 1× AMD Instinct MI300X VF (196288 MB) · INTEL(R) XEON(R) PLATINUM 8568Y+ · Ubuntu 24.04.5 LTS · kernel 6.8.0-149-generic · driver 7.1.9.31600000
+- **Run:** 2026-11-19T15:54:25Z · status **PASS** (exit 0)
+- **Time (mm:ss):** setup 105:41 · benchmark 00:06 · whole run 105:58
+- **Source:** run 102_20261119_155425
 - **Command:** `bash run_benchmark.sh --smoke --monitor-duration-sec 5 --expected-gpu-count 1 --min-pcie-link-width 16`
 
 | # | Metric | Result |
 |---|---|---|
 | 1 | dmesg GPU fault count (dmesg_gpu_fault_count) | 0.0 |
-| 2 | GPU temperature (gpu_temperature_c) | 42.0 |
+| 2 | GPU temperature (gpu_temperature_c) | 36.0 |
 | 3 | PCIe link width (pcie_link_width_lanes) | 16.0 |
 | 4 | PCIe link speed (pcie_link_speed_gt_s) | 32.0 |
 | 5 | HSA agents visible (hsa_agents_visible_count) | 1.0 |
